@@ -1,0 +1,75 @@
+﻿@model Ums.Web.Mvc.Models.RegistrationsByDepartmentVM
+@{
+    ViewBag.Title = "Report: Registrations by Department";
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="#" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-print"></i>
+            </span>
+            <span class="text">Print</span>
+        </a>
+    </nav>
+    <br />
+}
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Department
+            </th>
+            <th>
+                Course
+            </th>
+            <th>
+                Sections
+            </th>
+            <th>
+                Students
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RegistrationsByDepartment)
+        {
+            <tr>
+                <td>
+                    @item.Department
+                </td>
+                <td class="text-right">
+                    @item.CourseCount
+                </td>
+                <td class="text-right">
+                    @item.SectionCount
+                </td>
+                <td class="text-right">                  
+                    @item.StudentCount
+                </td>                
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th rowspan="1" colspan="1">Total: @Model.TotalDepartments</th> 
+            <th rowspan="1" colspan="1" class="text-right">Total: @Model.TotalCourses</th>
+            <th rowspan="1" colspan="1" class="text-right">Total: @Model.TotalSections</th>
+            <th rowspan="1" colspan="1" class="text-right">Total: @Model.TotalStudents</th>
+        </tr>
+    </tfoot>
+</table>
+
+@section PageLevelScripts{
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "paging": false
+            });
+        });
+    </script>
+}

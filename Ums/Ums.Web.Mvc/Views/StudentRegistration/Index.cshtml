@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Ums.Entities.Course>
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+    Student student = Session["User"] as Student;
+    IEnumerable<Registration> StudentSections = ViewBag.StudentSections;
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span class="text">Dashboard</span>
+        </a>
+    </nav>
+    <br />
+    <div id="alertBox" class="alert"></div>
+}
+
+@foreach (var item in Model)
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-header font-weight-bold text-primary">
+            <strong>@item.Code</strong>: @item.Name
+            <span class="badge badge-primary float-right">Credit: @item.Credit</span>
+        </div>
+        <div class="card-body">
+            @if (item.Sections.Count == 0)
+            {
+                <p>Currently NO Section is Available</p>
+            }
+            else
+            {
+                foreach (var sec in item.Sections)
+                {
+                <div class="bg-light mb-2 px-2 py-1">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" 
+                               id="section@(sec.Id)"
+                               name="@(item.Id)"
+                               value="@(sec.Id)"
+                               @(StudentSections.Any(x=>x.SectionId == sec.Id)? "checked onclick=deRegister(this)" : "onclick=register(this)") />
+                        <label class="custom-control-label" for="section@(sec.Id)"><strong>@sec.Name</strong></label>
+                        <span class="badge badge-info ml-3">Students: @sec.Students.Count()</span>
+                    </div>
+                </div>                
+                }
+            }
+        </div>
+    </div>
+}
+
+@section PageLevelScripts{
+    <script>
+        let alertBox = $("#alertBox");
+        alertBox.hide();
+
+        function deRegister(sectionCheckBox) {
+            $.ajax({
+                type: "POST",
+                url: "@ConfigurationManager.AppSettings["AppRoot"]/AjaxService/Deregister",
+                data: "StudentId=@student.Id&SectionId=" + sectionCheckBox.value,
+                success: function (result) {
+                    console.log(result);
+                    if (result == 0)
+                        dangerAlert(alertBox, "<strong>Error!</strong> Something wrong has happend");
+                    else {
+                        sectionCheckBox.checked = false;
+                        successAlert(alertBox, "<strong> Success!</strong > Section removed from your registration");
+                    }
+                },
+                error: function () { alertBox.html("could not connect"); }
+            });
+        }
+
+        function register(sectionCheckBox) {
+            let courseCheckBoxes = document.getElementsByName(sectionCheckBox.name);
+
+            $.ajax({
+                type: "POST",
+                url: "@ConfigurationManager.AppSettings["AppRoot"]/AjaxService/Register",
+                data: "StudentId=@student.Id&SectionId=" + sectionCheckBox.value,
+                success: function (result) {
+                    if (result == 0) {
+                        //dangerAlert(alertBox, "<strong>Error!</strong> Something wrong has happend");
+                        document.location = "@ConfigurationManager.AppSettings["AppRoot"]/StudentRegistration/Index";
+                    }
+                    else {
+                        for (let i = 0; i < courseCheckBoxes.length; ++i) {
+                            courseCheckBoxes[i].removeAttribute("onclick")
+                            courseCheckBoxes[i].setAttribute("onclick", "register(this)");                            
+                        }
+                        sectionCheckBox.removeAttribute("onclick")
+                        sectionCheckBox.setAttribute("onclick", "deRegister(this)");  
+                        successAlert(alertBox, "<strong> Success!</strong > Section added to your registration");
+                    }                        
+                },
+                error: function () { alertBox.html("could not connect"); }
+            });
+        }
+
+        function successAlert(control, message) {
+            control.removeClass("alert-danger");
+            control.addClass("alert-success");
+            control.html(message);
+            control.show();
+        }
+
+        function dangerAlert(control, message) {
+            control.removeClass("alert-success");
+            control.addClass("alert-danger");
+            control.html(message);
+            control.show();
+        }
+    </script>
+}

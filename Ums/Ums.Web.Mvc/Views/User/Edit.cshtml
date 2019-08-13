@@ -1,0 +1,94 @@
+﻿@model Ums.Entities.User
+@using Ums.Framework
+
+@{
+    ViewBag.SubTitle = "Edit";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="text">View List</span>
+        </a>
+        <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white">
+                <i class="fas fa-edit"></i>
+            </span>
+            <span class="text">Details</span>
+        </a>
+        <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+            <span class="icon text-danger">
+                <i class="fas fa-trash"></i>
+            </span>
+            <span class="text">Delete</span>
+        </a>
+    </nav>
+    <br />
+    @Html.Raw(ViewBag.AlertMessage)
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            Name
+            <div>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", onkeyup = "generateUserName(this.value)" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            UserName
+            <div>
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Email
+            <div>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            User Type
+            <div>
+                <select name="Type" class="custom-select">
+                    <option value="">Select ... </option>
+                    <option value="@((int)UserType.Admin)" @(Model != null && Model.Type == UserType.Admin ? "selected" : "")>@UserType.Admin</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Status
+            <div>
+                <select name="IsActive" class="custom-select">
+                    <option value="true" @(Model.IsActive == true ? "selected" : "")>Active</option>
+                    <option value="false" @(Model.IsActive == false ? "selected" : "")>Locked</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

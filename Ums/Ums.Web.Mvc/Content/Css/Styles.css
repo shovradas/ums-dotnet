@@ -1,0 +1,28 @@
+﻿body {
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+.dl-horizontal dd {
+    padding-left: 1rem;
+}
+
+.user .custom-checkbox.small label {
+    line-height: 1.5rem;
+}
+
+.user .form-control-user {
+    font-size: 0.8rem;
+    border-radius: 10rem;
+    padding: 1.5rem 1rem;
+}
+
+.user .btn-user {
+    font-size: 0.8rem;
+    border-radius: 10rem;
+    padding: 0.75rem 1rem;
+}

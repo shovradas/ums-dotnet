@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPrivate.cshtml";
+}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewBag.Title</h1>
+</div>
+@RenderSection("PageNav", false)
+<!-- End of Page Heading -->
+<!-- Page Body -->
+<div class="table-responsive">
+    @RenderBody()
+</div>
+<br />
+<!-- End of Page Body -->
+
+@section PageLevelStyles{
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    @RenderSection("PageLevelStyles", false)
+}
+
+@section PageLevelScripts{
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    @RenderSection("PageLevelScripts", false)
+}

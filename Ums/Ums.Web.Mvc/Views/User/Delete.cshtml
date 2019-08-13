@@ -1,0 +1,85 @@
+﻿@model Ums.Entities.User
+
+@{
+    ViewBag.SubTitle = "Delete";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="text">View List</span>
+        </a>
+        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white">
+                <i class="fas fa-edit"></i>
+            </span>
+            <span class="text">Edit</span>
+        </a>
+    </nav>
+
+    <br />
+
+    @Html.Raw(ViewBag.AlertMessage)
+
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong> Are you sure you want to delete? <a href="@Url.Action("Index")" class="alert-link">Take me back</a>
+    </div>
+}
+
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Model.Name
+        </dd>
+
+        <dt>
+            User Name
+        </dt>
+
+        <dd>
+            @Model.UserName
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Model.Email
+        </dd>
+
+        <dt>
+            Type
+        </dt>
+
+        <dd>
+            @Model.Type
+        </dd>
+
+        <dt>
+            Status
+        </dt>
+
+        <dd>
+            @Html.Raw((Model.IsActive ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Locked</span>"))
+        </dd>
+    </dl>
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </div>
+    </div>
+}

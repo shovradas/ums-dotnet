@@ -1,0 +1,57 @@
+﻿@model Ums.Entities.Section
+
+@{
+    ViewBag.SubTitle = "Details";
+}
+
+@section PageNav
+{
+<nav class="navbar navbar-expand-sm bg-primary">
+    <a href="@Url.Action("Index")" class="btn btn-primary btn-icon-split">
+        <span class="icon text-white-50">
+            <i class="fas fa-list"></i>
+        </span>
+        <span class="text">View List</span>
+    </a>
+    <a href="@Url.Action("Create")" class="btn btn-primary btn-icon-split">
+        <span class="icon text-white-50">
+            <i class="fas fa-plus"></i>
+        </span>
+        <span class="text">Create New</span>
+    </a>
+    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+        <span class="icon text-white">
+            <i class="fas fa-edit"></i>
+        </span>
+        <span class="text">Edit</span>
+    </a>
+    <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+        <span class="icon text-danger">
+            <i class="fas fa-trash"></i>
+        </span>
+        <span class="text">Delete</span>
+    </a>
+</nav>
+    <br />
+    @Html.Raw(TempData["AlertMessage"])
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        Name
+    </dt>
+
+    <dd>
+        @Model.Name
+    </dd>
+
+    <dt>
+        Course
+    </dt>
+
+    <dd>
+        <a href="@Url.Action("Details", "Course", new { id = Model.Course.Id })">
+            <strong>@Model.Course.Code</strong>: @Model.Course.Name
+        </a>        
+    </dd>
+</dl>

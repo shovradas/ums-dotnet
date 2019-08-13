@@ -1,0 +1,79 @@
+﻿@model ChartVM
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Registrations Overview";
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Registrations by Department</h6>
+    </div>
+    <div class="card-body">
+        <div class="chart-bar">
+            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas id="myBarChart" width="825" height="320" class="chartjs-render-monitor" style="display: block; width: 825px; height: 320px;"></canvas>
+        </div>
+        <hr>
+        Registrations Overview By Department
+    </div>
+</div>
+
+@section PageLevelScripts{
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+
+    <script>
+        function populateBarChart(barChartData) {
+            var ctx = $("#myBarChart");
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: barChartData.Labels,//['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Students',
+                        data: barChartData.Data,//[16, 4, 1, 1, 1, 0, 4, 1, 1, 1],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+        populateBarChart(@Html.Raw(JsonConvert.SerializeObject(Model)));
+    </script>
+}

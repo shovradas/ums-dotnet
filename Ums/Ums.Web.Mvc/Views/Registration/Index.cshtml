@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Ums.Entities.Department>
+
+@{
+    ViewBag.Title = "All Registrations";
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Create New</span>
+        </a>
+    </nav>
+    <br />
+    @Html.Raw(TempData["AlertMessage"])
+}
+
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Department
+                </th>
+                <th>
+                    Course
+                </th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Details", "Department", new { id = item.Id })">
+                            @item.Name
+                        </a>
+                    </td>
+                    <td>
+                        @foreach (var course in item.Courses)
+                        {
+                            <table class="table table-bordered table-sm table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td width="50%">
+                                            <a href="@Url.Action("Details", "Course", new { id = course.Id })">
+                                                <strong>@course.Code</strong>: @course.Name
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @foreach (var sec in course.Sections)
+                                            {
+                                                <table class="table table-bordered table-sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <strong>@sec.Name</strong>
+                                                                <span class="badge badge-secondary">STUDENTS: @sec.Students.Count()</span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <a href="@Url.Action("Details", new { id = sec.Id })" class="btn btn-info btn-circle btn-sm" title="Detail">
+                                                                    <i class="fas fa-info"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            }
+                                            <a href="@Url.Action("Create", "Section", new { courseId = course.Id })" class="btn btn-success btn-circle btn-sm" title="Create">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }                        
+                    </td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@section PageLevelScripts{
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

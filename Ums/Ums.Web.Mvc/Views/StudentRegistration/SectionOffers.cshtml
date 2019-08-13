@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Course>
+@{
+    ViewBag.Title = "Section Offers";
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span class="text">Dashboard</span>
+        </a>
+    </nav>
+    <br />
+}
+
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Course
+            </th>
+            <th>
+                Section
+            </th>                
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div>
+                        <strong>@item.Code</strong>: @item.Name
+                    </div>
+                    <span class="badge badge-primary">Credit: @item.Credit</span>
+                </td>
+                <td>
+                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <tbody>
+                            @foreach (var sec in item.Sections)
+                            {
+                                <tr>
+                                    <td>
+                                        @sec.Name
+                                        <span class="badge badge-info ml-3">Students: @sec.Students.Count()</span>
+                                    </td>                                    
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section PageLevelScripts{
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

@@ -1,0 +1,85 @@
+﻿@model Ums.Entities.Registration
+
+@{
+    ViewBag.SubTitle = "De-register Student";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="text">All Registrations</span>
+        </a>
+        <a href="@Url.Action("Details", new { id = Model.SectionId })" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span class="text">Back to Section</span>
+        </a>
+    </nav>
+
+    <br />
+
+    @Html.Raw(ViewBag.AlertMessage)
+
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong> Are you sure you want to delete? <a href="@Url.Action("Index")" class="alert-link">Take me back</a>
+    </div>
+}
+
+    <dl class="dl-horizontal">
+        <dt>
+            Registration Date
+        </dt>
+
+        <dd>
+            @Model.DateTime
+        </dd>
+        
+        <dt>
+            Course
+        </dt>
+
+        <dd>
+            <a href="@Url.Action("Details", "Course", new { id = Model.Section.Course.Id })">
+                @Model.Section.Course.Name
+            </a>            
+        </dd>
+
+        <dt>
+            Section
+        </dt>
+
+        <dd>
+            <a href="@Url.Action("Details", "Section", new { id = Model.Section.Id })">
+                @Model.Section.Name
+            </a>            
+        </dd>
+
+        <dt>
+            Student
+        </dt>
+
+        <dd>
+            <a href="@Url.Action("Details", "Student", new { id = Model.Student.Id })">
+                @Model.Student.FormattedId
+            </a>            
+        </dd>
+
+    </dl>
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-actions no-color">
+        <div>
+            <input type="submit" value="De-register" class="btn btn-danger" />
+        </div>
+    </div>
+}

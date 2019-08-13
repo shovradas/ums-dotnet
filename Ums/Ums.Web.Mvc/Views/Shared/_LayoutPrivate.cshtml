@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (ViewBag.Subtitle != null)
+    {
+        ViewBag.Title = ViewBag.Title + " -- " + ViewBag.Subtitle;
+    }
+}
+
+@section SideBar{
+    @{
+        User user = Session["User"] as User;
+        if (user.Type == Ums.Framework.UserType.Admin)
+        {
+            Html.RenderPartial("SideBarAdmin");
+        }
+        else if (user.Type == Ums.Framework.UserType.Student)
+        {
+            Html.RenderPartial("SideBarStudent");
+        }
+    }
+}
+
+@section TopBar{
+    @{ Html.RenderPartial("TopBar"); }
+}
+
+@section PageLevelStyles{
+    @RenderSection("PageLevelStyles", false)
+}
+
+@section PageLevelScripts{
+    @RenderSection("PageLevelScripts", false)
+}
+
+@RenderBody()

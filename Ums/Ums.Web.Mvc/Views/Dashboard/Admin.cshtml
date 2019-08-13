@@ -1,0 +1,239 @@
+﻿@model AdminDashboardVM
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_LayoutPrivate.cshtml";
+}
+
+<!-- Content Row -->
+<div class="row">
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Departments</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a href="@Url.Action("Index", "Department")">
+                                @Model.DepartmentCount
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-file fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Courses</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a href="@Url.Action("Index", "Course")">
+                                @Model.CourseCount
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-pen fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Students</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a href="@Url.Action("Index", "Student")">
+                                @Model.StudentCount
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Registrations</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a href="@Url.Action("Index", "Registration")">
+                                @Model.RegistrationCount
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-screwdriver fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Row -->
+
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <a href="@Url.Action("RegistrationsOverview", "Report")">
+                        Registrations Overview
+                    </a>
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myBarChart" width="825" height="320" class="chartjs-render-monitor" style="display: block; width: 825px; height: 320px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Pie Chart -->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <a href="@Url.Action("Index", "User")">
+                        Users
+                    </a>                    
+                </h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myPieChart" style="display: block; width: 551px; height: 208px;" width="551" height="208" class="chartjs-render-monitor"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-primary"></i> Admin
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-success"></i> Student
+                    </span>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section PageLevelScripts{
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+
+    <script>
+        function populateBarChart(barChartData) {
+            //console.log(barChartData);
+
+            var ctx = $("#myBarChart");
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: barChartData.Labels,//['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Students',
+                        data: barChartData.Data,//[16, 4, 1, 1, 1, 0, 4, 1, 1, 1],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{                            
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+        function populatePieChart(pieChartData) {
+            var ctx = $("#myPieChart");
+            var myPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: pieChartData.Labels,//["Direct", "Referral", "Social"],
+                    datasets: [{
+                        data: pieChartData.Data,//[55, 30, 15],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: false
+                    },
+                    cutoutPercentage: 80,
+                },
+            });
+        }
+
+        populateBarChart(@Html.Raw(JsonConvert.SerializeObject(Model.BarChartVM)));
+        populatePieChart(@Html.Raw(JsonConvert.SerializeObject(Model.PieChartVM)));
+    </script>
+}

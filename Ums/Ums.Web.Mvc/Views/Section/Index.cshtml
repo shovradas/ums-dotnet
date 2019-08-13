@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Ums.Entities.Course>
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Create New</span>
+        </a>
+    </nav>
+    <br />
+    @Html.Raw(TempData["AlertMessage"])
+}
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Course
+            </th>
+            <th>
+                Sections
+            </th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "Course", new { id = item.Id })">
+                        <strong>@item.Code</strong>: @item.Name
+                    </a>
+                </td>
+                <td>
+                    @foreach (var sec in item.Sections)
+                    {
+                        <table class="table table-bordered table-sm table-striped">
+                            <tbody>
+                                <tr>
+                                    <td><strong>@sec.Name</strong></td>
+                                    <td class="float-right">
+                                        <a href="@Url.Action("Details", new { id = sec.Id })" class="btn btn-info btn-circle btn-sm" title="Detail">
+                                            <i class="fas fa-info"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = sec.Id })" class="btn btn-primary btn-circle btn-sm" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = sec.Id })" class="btn btn-danger btn-circle btn-sm" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                    <a href="@Url.Action("Create", new { courseId = item.Id })" class="btn btn-success btn-circle btn-sm" title="Create">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section PageLevelScripts{
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

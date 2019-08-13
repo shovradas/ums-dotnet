@@ -1,0 +1,103 @@
+﻿@model Ums.Entities.Section
+
+@{
+    ViewBag.SubTitle = "SectionDetail";
+    Layout = "~/Views/Shared/_LayoutPrivateList.cshtml";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="text">All Registrations</span>
+        </a>
+        <a href="@Url.Action("Create", new { id = Model.Id })" class="btn btn-primary btn-icon-split">
+            <span class="icon text-success">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Add Student</span>
+        </a>
+    </nav>
+    <br />
+    @Html.Raw(TempData["AlertMessage"])
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        Course
+    </dt>
+
+    <dd>
+        <a href="@Url.Action("Details", "Course", new { id = Model.Course.Id })">
+            <strong>@Model.Course.Code</strong>: @Model.Course.Name
+        </a>
+    </dd>
+
+    <dt>
+        Section
+    </dt>
+
+    <dd>
+        <a href="@Url.Action("Details", "Section", new { id = Model.Id })">
+            @Model.Name
+        </a>
+    </dd>
+
+    <dt>
+        Students
+    </dt>
+</dl>
+<hr />
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Student Id
+            </th>
+            <th>
+                Student Name
+            </th>
+            <th>
+                Department
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "Student", new { id = item.StudentId })">
+                        @item.Student.FormattedId
+                    </a>
+                </td>
+                <td>
+                    @item.Student.Name
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", "Student", new { id = item.Student.DepartmentId })">
+                        @item.Student.Department.Name
+                    </a>
+                </td>
+                <td class="text-right">
+                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-circle btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section PageLevelScripts{
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

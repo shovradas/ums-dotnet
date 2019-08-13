@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "UnAuthorized";
+    Layout = "~/Views/Shared/_LayoutPrivateForm.cshtml";
+}
+
+<div class="text-center">
+    <div class="error mx-auto" data-text="401">401</div>
+    <p class="lead text-gray-800 mb-5">Authorization Error</p>
+    <p class="text-gray-500 mb-0">Looks like you are not authorized to see this content</p>
+    <a href="@Url.Action(ViewBag.ReturnUrl)">← Take me back</a>
+</div>
+
+

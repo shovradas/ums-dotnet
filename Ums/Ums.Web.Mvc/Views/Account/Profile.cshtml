@@ -1,0 +1,75 @@
+﻿@model Ums.Entities.User
+
+@{
+    ViewBag.SubTitle = "Profile";
+}
+
+@section PageNav
+{
+    <nav class="navbar navbar-expand-sm bg-primary">
+        <a href="@Url.Action("Index", "Dashboard")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span class="text">Dashboard</span>
+        </a>
+        <a href="@Url.Action("Edit")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-edit"></i>
+            </span>
+            <span class="text">Edit</span>
+        </a>
+        <a href="@Url.Action("ChangePassword")" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-key"></i>
+            </span>
+            <span class="text">Change Password</span>
+        </a>
+    </nav>
+    <br />
+    @Html.Raw(TempData["AlertMessage"])
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.UserName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.UserName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Password)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Password)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+
+    <dt>
+        @Html.DisplayName("Status")
+    </dt>
+
+    <dd>
+        @{ var status = Model.IsActive ? "Active" : "Blocked"; }
+        @status
+    </dd>
+
+</dl>
