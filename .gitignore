@@ -1,0 +1,6 @@
+Ums/.vs
+Ums/packages
+Ums/*/bin
+Ums/*/obj
+Ums/*/obj
+*.user
